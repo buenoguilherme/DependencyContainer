@@ -11,10 +11,14 @@ enum Scope {
 class DependencyContainer {
     typealias DependencyFactory = () -> Any
     
+    public static let shared = DependencyContainer()
+    
+    internal init() {}
+    
     var dependencies = [Any]()
     var dependencyFactories = [String: (Scope, DependencyFactory)]()
     
-    func register<T>(
+    public func register<T>(
         _ factory: @escaping () -> T,
         forIdentifier identifier: String? = nil,
         scope: Scope = .prototype
@@ -23,7 +27,7 @@ class DependencyContainer {
         dependencyFactories[key] = (scope, factory)
     }
     
-    func resolve<T>(identifier: String? = nil, _ typeToResolve: T.Type) throws -> T {
+    public func resolve<T>(identifier: String? = nil, _ typeToResolve: T.Type) throws -> T {
         let key = identifier ?? String(describing: T.self)
         
         guard let (scope, factory) = dependencyFactories[key] else {
@@ -48,5 +52,14 @@ class DependencyContainer {
         } else {
             throw DependencyContainerError.dependencyDoesNotExist
         }
+    }
+}
+
+@propertyWrapper
+struct Injected<Value> {
+    var wrappedValue: Value
+
+    init() {
+        wrappedValue = try! DependencyContainer.shared.resolve(Value.self)
     }
 }
