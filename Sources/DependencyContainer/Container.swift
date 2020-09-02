@@ -1,22 +1,22 @@
-enum DependencyContainerError: Error {
-    case dependencyDoesNotExist
-    case typeConversion
-}
-
-enum Scope {
-    case singleton
-    case prototype
-}
-
-class DependencyContainer {
-    typealias DependencyFactory = () -> Any
+public class DependencyContainer {
+    public typealias DependencyFactory = () -> Any
     
-    public static let shared = DependencyContainer()
+    public enum Error: Swift.Error {
+        case dependencyDoesNotExist
+        case typeConversion
+    }
+
+    public enum Scope {
+        case singleton
+        case prototype
+    }
+    
+    public static var shared: () -> DependencyContainer = { DependencyContainer() }
     
     internal init() {}
     
-    var dependencies = [Any]()
-    var dependencyFactories = [String: (Scope, DependencyFactory)]()
+    private var dependencies = [Any]()
+    private var dependencyFactories = [String: (Scope, DependencyFactory)]()
     
     public func register<T>(
         _ factory: @escaping () -> T,
@@ -31,7 +31,7 @@ class DependencyContainer {
         let key = identifier ?? String(describing: T.self)
         
         guard let (scope, factory) = dependencyFactories[key] else {
-            throw DependencyContainerError.dependencyDoesNotExist
+            throw Error.dependencyDoesNotExist
         }
         
         let dependency: Any?
@@ -47,19 +47,10 @@ class DependencyContainer {
             if let dependency = dependency as? T {
                 return dependency
             } else {
-                throw DependencyContainerError.typeConversion
+                throw Error.typeConversion
             }
         } else {
-            throw DependencyContainerError.dependencyDoesNotExist
+            throw Error.dependencyDoesNotExist
         }
-    }
-}
-
-@propertyWrapper
-struct Injected<Value> {
-    var wrappedValue: Value
-
-    init() {
-        wrappedValue = try! DependencyContainer.shared.resolve(Value.self)
     }
 }
