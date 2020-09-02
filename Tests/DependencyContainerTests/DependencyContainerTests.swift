@@ -91,6 +91,26 @@ final class DependencyContainerTests: XCTestCase {
         XCTAssert(firstResolvedDependency !== secondResolvedDependency)
     }
     
+    func test_registerAPrototypeWithSameTypeAndDifferentKeys_shouldCallDifferentFactories() {
+        let factory1: () -> String = {
+            return "factory1"
+        }
+        
+        let factory2: () -> String = {
+            return "factory2"
+        }
+        
+        Enviroment.initialize(container: sut)
+        let key1 = UUID().uuidString
+        sut.register(factory1, forIdentifier: key1, scope: .singleton)
+        let key2 = UUID().uuidString
+        sut.register(factory2, forIdentifier: key2, scope: .singleton)
+        
+
+        XCTAssertEqual(try! sut.resolve(identifier: key1, String.self), "factory1")
+        XCTAssertEqual(try! sut.resolve(identifier: key2, String.self), "factory2")
+    }
+    
     static var allTests = [
         ("test_register_and_resolve", test_register_and_resolve),
         ("test_resolve_without_register", test_resolve_without_register),
