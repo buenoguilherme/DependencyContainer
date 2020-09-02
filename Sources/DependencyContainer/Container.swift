@@ -11,12 +11,7 @@ public class DependencyContainer {
         case prototype
     }
     
-    public private(set) static var shared: DependencyContainer!
-    
     public init() {}
-    public static func initializeEnvironment(container: DependencyContainer = .init()) {
-        DependencyContainer.shared = container
-    }
     
     private var dependencies = [Any]()
     private var dependencyFactories = [String: (Scope, DependencyFactory)]()

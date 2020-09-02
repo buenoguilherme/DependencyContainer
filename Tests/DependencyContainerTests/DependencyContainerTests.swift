@@ -38,14 +38,14 @@ final class DependencyContainerTests: XCTestCase {
             return expectedDependency
         }
         
-        DependencyContainer.initializeEnvironment(container: sut)
+        Enviroment.initialize(container: sut)
         sut.register(factory)
         
         XCTAssertEqual(expectedDependency, SomeClass().someString)
     }
     
     func test_injected_without_register() {
-        DependencyContainer.initializeEnvironment(container: sut)
+        Enviroment.initialize(container: sut)
         XCTAssertNil(SomeClass().someString)
     }
     
@@ -60,6 +60,6 @@ final class DependencyContainerTests: XCTestCase {
 
 // MARK: - helpers
 final class SomeClass {
-    @Injected()
+    @Injected
     var someString: String?
 }
