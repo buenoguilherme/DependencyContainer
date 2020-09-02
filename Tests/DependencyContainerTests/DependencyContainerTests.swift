@@ -38,15 +38,14 @@ final class DependencyContainerTests: XCTestCase {
             return expectedDependency
         }
         
-        DependencyContainer.shared = { self.sut }
+        DependencyContainer.initializeEnvironment(container: sut)
         sut.register(factory)
         
         XCTAssertEqual(expectedDependency, SomeClass().someString)
     }
     
     func test_injected_without_register() {
-        DependencyContainer.shared = { self.sut }
-        
+        DependencyContainer.initializeEnvironment(container: sut)
         XCTAssertNil(SomeClass().someString)
     }
     

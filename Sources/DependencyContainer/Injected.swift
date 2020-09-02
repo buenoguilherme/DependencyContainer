@@ -2,7 +2,7 @@
     let container: DependencyContainer
     var wrappedValue: Value?
     
-    init(container: DependencyContainer = .shared()) {
+    init(container: DependencyContainer = .shared) {
         self.container = container
         wrappedValue = try? container.resolve(Value.self)
     }

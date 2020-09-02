@@ -1,3 +1,11 @@
 # DependencyContainer
 
-A description of this package.
+Usage: 
+
+```swift
+let container = DependencyContainer()
+DependencyContainer.shared = { container }
+```
+
+
+
