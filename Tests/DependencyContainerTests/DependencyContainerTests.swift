@@ -43,16 +43,24 @@ final class DependencyContainerTests: XCTestCase {
         
         XCTAssertEqual(expectedDependency, SomeClass().someString)
     }
-
+    
+    func test_injected_without_register() {
+        DependencyContainer.shared = { self.sut }
+        
+        XCTAssertNil(SomeClass().someString)
+    }
+    
     static var allTests = [
         ("test_register_and_resolve", test_register_and_resolve),
         ("test_resolve_without_register", test_resolve_without_register),
+        ("test_injection", test_injection),
+        ("test_injected_without_register", test_injected_without_register)
     ]
     
-    // MARK: - helpers
-    final class SomeClass {
-        @Injected()
-        var someString: String?
-    }
 }
 
+// MARK: - helpers
+final class SomeClass {
+    @Injected()
+    var someString: String?
+}
