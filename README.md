@@ -25,7 +25,7 @@ final class SomeClass {
 }
 
 let someClass = SomeClass()
-someClass.someString // prints "some string"
+someClass.someString // "some string"
 ```
 
 
