@@ -13,7 +13,7 @@ public class DependencyContainer {
     
     public init() {}
     
-    private var dependencies = [Any]()
+    private var dependencies = [String: Any]()
     private var dependencyFactories = [String: (Scope, DependencyFactory)]()
     
     public func register<T>(
@@ -36,11 +36,11 @@ public class DependencyContainer {
         
         switch scope {
         case .singleton:
-            if let dep = dependencies.first(where: { $0 is T }) {
+            if let dep = dependencies[key] as? T {
                 dependency = dep
             } else {
                 dependency = factory()
-                dependencies.append(dependency)
+                dependencies[key] = dependency
             }
         case .prototype:
             dependency = factory()
@@ -50,6 +50,6 @@ public class DependencyContainer {
             return dependency
         } else {
             throw Error.typeConversion
-        } 
+        }
     }
 }
