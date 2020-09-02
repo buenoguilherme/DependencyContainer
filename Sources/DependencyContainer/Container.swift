@@ -35,10 +35,15 @@ public class DependencyContainer {
         let dependency: Any?
         
         switch scope {
+        case .singleton:
+            if let dep = dependencies.first(where: { $0 is T }) {
+                dependency = dep
+            } else {
+                dependency = factory()
+                dependencies.append(dependency!)
+            }
         case .prototype:
             dependency = factory()
-        default:
-            dependency = dependencies.first { $0.self is T.Type }
         }
         
         if let dependency = dependency {

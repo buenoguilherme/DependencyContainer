@@ -44,6 +44,32 @@ final class DependencyContainerTests: XCTestCase {
         XCTAssertEqual(expectedDependency, SomeClass().someString)
     }
     
+    func test_prototypeRegistering_shouldReturnANewInstanceOnEachUsage() {
+        let factory: () -> SomeClass = {
+            return SomeClass()
+        }
+        
+        Enviroment.initialize(container: sut)
+        sut.register(factory, scope: .prototype)
+        
+        let firstResolvedDependency = try! sut.resolve(SomeClass.self)
+        let secondResolvedDependency = try! sut.resolve(SomeClass.self)
+        XCTAssert(firstResolvedDependency !== secondResolvedDependency)
+    }
+    
+    func test_singletonRegistering_shouldReturnTheSameInstanceEveryTime() {
+        let factory: () -> SomeClass = {
+            return SomeClass()
+        }
+        
+        Enviroment.initialize(container: sut)
+        sut.register(factory, scope: .singleton)
+        
+        let firstResolvedDependency = try! sut.resolve(SomeClass.self)
+        let secondResolvedDependency = try! sut.resolve(SomeClass.self)
+        XCTAssert(firstResolvedDependency === secondResolvedDependency)
+    }
+    
     func test_injected_without_register() {
         Enviroment.initialize(container: sut)
         XCTAssertNil(SomeClass().someString)
