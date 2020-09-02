@@ -5,7 +5,7 @@ public class DependencyContainer {
         case dependencyDoesNotExist
         case typeConversion
     }
-
+    
     public enum Scope {
         case singleton
         case prototype
@@ -32,7 +32,7 @@ public class DependencyContainer {
             throw Error.dependencyDoesNotExist
         }
         
-        let dependency: Any?
+        var dependency: Any
         
         switch scope {
         case .singleton:
@@ -40,20 +40,16 @@ public class DependencyContainer {
                 dependency = dep
             } else {
                 dependency = factory()
-                dependencies.append(dependency!)
+                dependencies.append(dependency)
             }
         case .prototype:
             dependency = factory()
         }
         
-        if let dependency = dependency {
-            if let dependency = dependency as? T {
-                return dependency
-            } else {
-                throw Error.typeConversion
-            }
+        if let dependency = dependency as? T {
+            return dependency
         } else {
-            throw Error.dependencyDoesNotExist
-        }
+            throw Error.typeConversion
+        } 
     }
 }
