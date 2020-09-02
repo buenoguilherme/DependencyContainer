@@ -17,7 +17,7 @@ let factory: () -> String = {
 container.register(factory)
 ```
 
-Finally you can use the ```@Injected``` property wrapper to automatically inject in your code.
+Finally you can use the ```@Injected``` property wrapper to automatically inject that dependency in your code.
 ```swift
 final class SomeClass {
     @Injected
@@ -25,7 +25,7 @@ final class SomeClass {
 }
 
 let someClass = SomeClass()
-someClass.someString // prints "some string"
+someClass.someString // "some string"
 ```
 
 
