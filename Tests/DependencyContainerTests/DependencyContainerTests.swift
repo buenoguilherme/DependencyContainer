@@ -37,7 +37,7 @@ final class DependencyContainerTests: XCTestCase {
             return SomeClass()
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         sut.register(factory, scope: .prototype)
         
         let firstResolvedDependency = try! sut.resolve(SomeClass.self)
@@ -50,7 +50,7 @@ final class DependencyContainerTests: XCTestCase {
             return SomeClass()
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         sut.register(factory, scope: .singleton)
         
         let firstResolvedDependency = try! sut.resolve(SomeClass.self)
@@ -63,7 +63,7 @@ final class DependencyContainerTests: XCTestCase {
             return SomeClass()
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         let key1 = UUID().uuidString
         sut.register(factory, forIdentifier: key1, scope: .singleton)
         let key2 = UUID().uuidString
@@ -83,7 +83,7 @@ final class DependencyContainerTests: XCTestCase {
             return "factory2"
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         let key1 = UUID().uuidString
         sut.register(factory1, forIdentifier: key1, scope: .singleton)
         let key2 = UUID().uuidString

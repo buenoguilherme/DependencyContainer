@@ -15,7 +15,7 @@ final class InjectedTests: XCTestCase {
     }
     
     func test_injectedPropertyWithoutRegister_shouldReturnNil() {
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         XCTAssertNil(SomeClass().someString)
     }
     
@@ -25,7 +25,7 @@ final class InjectedTests: XCTestCase {
             return expectedDependency
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         sut.register(factory)
         
         XCTAssertEqual(expectedDependency, SomeClass().someString)
@@ -42,7 +42,7 @@ final class InjectedTests: XCTestCase {
             return dependency2
         }
         
-        Enviroment.initialize(container: sut)
+        Environment.initialize(container: sut)
         sut.register(factory1, forIdentifier: "key1")
         sut.register(factory2, forIdentifier: "key2")
         
