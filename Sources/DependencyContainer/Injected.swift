@@ -1,8 +1,8 @@
-@propertyWrapper struct Injected<Value> {
+@propertyWrapper public struct Injected<Value> {
     let container: DependencyContainer
-    var wrappedValue: Value?
+    public var wrappedValue: Value?
     
-    init(key: String? = nil, container: DependencyContainer = Environment.shared) {
+    public init(key: String? = nil, container: DependencyContainer = Environment.shared) {
         self.container = container
         wrappedValue = try? container.resolve(identifier: key, Value.self)
     }
