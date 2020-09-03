@@ -5,7 +5,7 @@
 First of all you will need to initialize the shared environment:
 ```swift
 let container = DependencyContainer()
-Enviroment.initialize(container: container)
+Environment.initialize(container: container)
 ```
 
 Then you register what you want to be injected:
