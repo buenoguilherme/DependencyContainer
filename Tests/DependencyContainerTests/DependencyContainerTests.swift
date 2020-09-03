@@ -25,28 +25,11 @@ final class DependencyContainerTests: XCTestCase {
         XCTAssertEqual(expectedDependency, returnedDependency)
     }
     
-    func test_resolve_without_register() {
+    func test_resolveWithoutRegister_shouldThrowError() {
         XCTAssertThrowsError(try sut.resolve(Int.self))
         XCTAssertThrowsError(try sut.resolve(String.self))
         XCTAssertThrowsError(try sut.resolve(Double.self))
         XCTAssertThrowsError(try sut.resolve(DependencyContainer.self))
-    }
-    
-    func test_injection() {
-        let expectedDependency = UUID().uuidString
-        let factory: () -> String = {
-            return expectedDependency
-        }
-        
-        Enviroment.initialize(container: sut)
-        sut.register(factory)
-        
-        XCTAssertEqual(expectedDependency, SomeClass().someString)
-    }
-    
-    func test_injected_without_register() {
-        Enviroment.initialize(container: sut)
-        XCTAssertNil(SomeClass().someString)
     }
     
     func test_prototypeRegistering_shouldReturnANewInstanceOnEachUsage() {
@@ -113,9 +96,7 @@ final class DependencyContainerTests: XCTestCase {
     
     static var allTests = [
         ("test_register_and_resolve", test_register_and_resolve),
-        ("test_resolve_without_register", test_resolve_without_register),
-        ("test_injection", test_injection),
-        ("test_injected_without_register", test_injected_without_register),
+        ("test_resolveWithoutRegister_shouldThrowError", test_resolveWithoutRegister_shouldThrowError),
         ("test_prototypeRegistering_shouldReturnANewInstanceOnEachUsage", test_prototypeRegistering_shouldReturnANewInstanceOnEachUsage),
         ("test_singletonRegistering_shouldReturnTheSameInstanceEveryTime", test_singletonRegistering_shouldReturnTheSameInstanceEveryTime),
         ("test_registerASingletonWithSameTypeAndDifferentKeys_shouldResolveDifferentInstances", test_registerASingletonWithSameTypeAndDifferentKeys_shouldResolveDifferentInstances)
@@ -124,7 +105,4 @@ final class DependencyContainerTests: XCTestCase {
 }
 
 // MARK: - helpers
-final class SomeClass {
-    @Injected
-    var someString: String?
-}
+private final class SomeClass { }
